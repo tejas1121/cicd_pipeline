@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import ChatWindow from "./components/ChatWindow";
+import ChatInput from "./components/ChatInput";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [messages, setMessages] = useState([]);
+
+  const sendMessage = async (message) => {
+
+    const userMessage = { text: message, sender: "user" };
+    setMessages((prev) => [...prev, userMessage]);
+
+    // Call backend API
+    const res = await fetch("http://localhost:5000/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message })
+    });
+
+    const data = await res.json();
+
+    const botMessage = { text: data.reply, sender: "bot" };
+
+    setMessages((prev) => [...prev, botMessage]);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ width: "600px", margin: "50px auto" }}>
+      <h2>AI Chatbot</h2>
+
+      <ChatWindow messages={messages} />
+
+      <ChatInput onSend={sendMessage} />
+    </div>
+  );
 }
 
-export default App
+export default App;
