@@ -13,17 +13,13 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                dir('ai-chatbot-devops') {
-                    sh 'docker compose build'
-                }
+                sh 'docker compose build'
             }
         }
 
         stage('Run Containers') {
             steps {
-                dir('ai-chatbot-devops') {
-                    sh 'docker compose up -d'
-                }
+                sh 'docker compose up -d'
             }
         }
 
