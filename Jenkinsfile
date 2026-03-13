@@ -6,7 +6,8 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/tejas1121/cicd_pipeline.git'
+                git branch: 'main',
+                    url: 'https://github.com/tejas1121/cicd_pipeline.git'
             }
         }
 
