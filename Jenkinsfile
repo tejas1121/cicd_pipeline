@@ -4,22 +4,15 @@ pipeline {
 
     stages {
 
-        stage('Clone Repo') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/tejas1121/cicd_pipeline.git'
-            }
-        }
-
         stage('Build Docker Images') {
             steps {
-                sh 'docker compose build'
+                sh 'docker compose -f docker-compose.yml build'
             }
         }
 
         stage('Run Containers') {
             steps {
-                sh 'docker compose up -d'
+                sh 'docker compose -f docker-compose.yml up -d'
             }
         }
 
