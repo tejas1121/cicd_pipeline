@@ -1,18 +1,20 @@
+import ReactMarkdown from "react-markdown";
+
 function MessageBubble({ message, sender }) {
+
+  const messageClass =
+    sender === "user" ? "message-user" : "message-bot";
+
+  const bubbleClass =
+    sender === "user" ? "bubble-user" : "bubble-bot";
+
   return (
-    <div style={{
-      textAlign: sender === "user" ? "right" : "left",
-      margin: "10px"
-    }}>
-      <span style={{
-        background: sender === "user" ? "#007bff" : "#eee",
-        color: sender === "user" ? "white" : "black",
-        padding: "8px 12px",
-        borderRadius: "10px",
-        display: "inline-block"
-      }}>
-        {message}
-      </span>
+    <div className={messageClass}>
+      <div className={bubbleClass}>
+        <ReactMarkdown>
+          {message}
+        </ReactMarkdown>
+      </div>
     </div>
   );
 }

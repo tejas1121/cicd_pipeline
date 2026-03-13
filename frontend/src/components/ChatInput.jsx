@@ -1,29 +1,44 @@
 import { useState } from "react";
 
 function ChatInput({ onSend }) {
-  const [message, setMessage] = useState("");
+
+  const [input, setInput] = useState("");
 
   const handleSend = () => {
-    if (!message.trim()) return;
 
-    onSend(message);
-    setMessage("");
+    if (!input.trim()) return;
+
+    onSend(input);
+    setInput("");
+
+  };
+
+  const handleKeyDown = (e) => {
+
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+
   };
 
   return (
-    <div style={{ display: "flex", marginTop: "10px" }}>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
+
+    <div className="chat-input">
+
+      <textarea
         placeholder="Ask something..."
-        style={{ flex: 1, padding: "8px" }}
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
 
-      <button onClick={handleSend} style={{ padding: "8px 16px" }}>
+      <button onClick={handleSend}>
         Send
       </button>
+
     </div>
+
   );
 }
 

@@ -10,24 +10,17 @@ router.post("/", async (req, res) => {
 
   try {
 
-    const { message } = req.body;
+    const { messages } = req.body;
 
     const completion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: "user",
-          content: message
-        }
-      ],
+      messages: messages,
       model: "llama-3.1-8b-instant"
     });
 
-    const aiResponse = completion.choices[0].message.content;
-
-    const summary = aiResponse.split(".").slice(0,2).join(".") + ".";
+    const reply = completion.choices[0].message.content;
 
     res.json({
-      reply: summary
+      reply: reply
     });
 
   } catch (error) {

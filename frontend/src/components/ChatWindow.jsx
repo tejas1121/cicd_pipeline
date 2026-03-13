@@ -1,21 +1,39 @@
+import { useEffect, useRef } from "react";
 import MessageBubble from "./MessageBubble";
 
-function ChatWindow({ messages }) {
+function ChatWindow({ messages, isTyping }) {
+
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
+
   return (
-    <div style={{
-      height: "400px",
-      overflowY: "auto",
-      border: "1px solid #ccc",
-      padding: "10px"
-    }}>
+
+    <div className="chat-window">
+
       {messages.map((msg, index) => (
+
         <MessageBubble
           key={index}
-          message={msg.text}
-          sender={msg.sender}
+          message={msg.content}
+          sender={msg.role === "user" ? "user" : "bot"}
         />
+
       ))}
+
+      {isTyping && (
+        <MessageBubble
+          message="AI is thinking..."
+          sender="bot"
+        />
+      )}
+
+      <div ref={bottomRef}></div>
+
     </div>
+
   );
 }
 
