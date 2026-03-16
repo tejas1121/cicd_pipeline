@@ -11,20 +11,26 @@ pipeline {
         stage('Create ENV file') {
             steps {
                 sh '''
-                echo GROQ_API_KEY=$GROQ_API_KEY > backend/.env
+                echo "GROQ_API_KEY=$GROQ_API_KEY" > backend/.env
                 '''
+            }
+        }
+
+        stage('Stop Existing Containers') {
+            steps {
+                sh 'docker-compose -f docker-compose.yml down || true'
             }
         }
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker compose -f docker-compose.yml build'
+                sh 'docker-compose -f docker-compose.yml build'
             }
         }
 
         stage('Run Containers') {
             steps {
-                sh 'docker compose -f docker-compose.yml up -d'
+                sh 'docker-compose -f docker-compose.yml up -d'
             }
         }
 
