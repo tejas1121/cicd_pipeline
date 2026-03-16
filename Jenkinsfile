@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        GROQ_API_KEY = credentials('groq-key')
+        GROQ_API_KEY = credentials('groq-api-key')
     }
 
     stages {
